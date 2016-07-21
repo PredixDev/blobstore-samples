@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Predix Blobstore Service Demo</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="/css/loading.css" rel="stylesheet"/>
+    <link href="/css/heading.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <form action="/">
+        <div class="hero-unit">
+            <h1 class="heading-small">Predix Blobstore Service Demo</h1>
+
+            <p>Predix Blobstore sample application utilizing Spring Boot and AWS S3 Client library </p>
+        </div>
+    </form>
+    <h2>Upload a File!</h2>
+
+    <form id="fileupload">
+        <div class="form-group">
+            <label for="image">File to upload</label>
+            <input type="file" id="image" name="file"/>
+
+            <p class="help-block">Note: Uploading a file of the same name will replace the existing file.</p>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-default upload-blob-btn">Upload</button>
+        </div>
+    </form>
+    <h2>Files Uploaded</h2>
+
+    <div class="table-responsive" id="blob-table">
+        <table class="table">
+            <tbody class="table tbody">
+            <tr th:each="image : ${images}" th:id="${image.getKey()}">
+                <td class="table td"><a th:href="@{'/v1/blob/'+${image.getKey()}}"><span
+                        th:inline="text">[[${image.getKey()}]]</span></a>
+                </td>
+                <td class="table td">
+                    <a href="#" class="delete-blob-link" th:attr="data-blob-id=${image.getKey()}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="loading-modal"/>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/loading.js"></script>
+<script src="/js/blob-actions.js"></script>
+</body>
+</html>

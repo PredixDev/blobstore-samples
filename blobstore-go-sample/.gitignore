@@ -1,0 +1,9 @@
+*.swp
+.DS_Store
+coverage.xml
+.idea
+*.iml
+blobstore-go-sample
+*.coverprofile
+*.tar*
+config.properties

@@ -1,0 +1,7 @@
+blobstore:
+  accessKey:
+  secretKey:
+  bucket:
+  url:
+server:
+  port: 8000

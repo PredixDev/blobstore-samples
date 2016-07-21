@@ -1,0 +1,8 @@
+---
+applications:
+  - name: object-store-aws
+    memory: 512M
+    instances: 1
+    buildpack: java_buildpack
+    path: target/blobstore-aws-sample-1.0.0-SNAPSHOT.jar
+    timeout: 180

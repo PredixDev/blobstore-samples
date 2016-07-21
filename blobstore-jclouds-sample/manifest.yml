@@ -1,0 +1,12 @@
+---
+applications:
+  - name: object-store-final
+    memory: 512M
+    instances: 1
+    buildpack: java_buildpack
+    path: target/blobstore-jclouds-sample-1.0.0-SNAPSHOT.jar
+    timeout: 180
+    env:
+     BROKER_SERVICE_NAME: blob-sample-serv
+    services:
+     - blob-sample-serv
