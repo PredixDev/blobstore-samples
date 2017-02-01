@@ -1,0 +1,10 @@
+{
+  "apiVersion" : "v1",
+  "swaggerVersion" : "1.2",
+  "info" : {
+    "title" : "Swagger Maven Plugin Sample",
+    "description" : "This is a sample for swagger-maven-plugin",
+    "contact" : "dave chen"
+  },
+  "basePath" : "http://www.wordnik.com/restapi/doc"
+}

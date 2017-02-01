@@ -1,0 +1,8 @@
+{
+  "name": "Predix Blobstore Samples",
+  "version": "1.0.1",
+  "private": true,
+  "dependencies": {
+  },
+  "author": "predix-data-services"
+}

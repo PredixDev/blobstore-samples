@@ -1,0 +1,11 @@
+---
+applications:
+  - name: blobstore-go-sample
+    memory: 256M
+    instances: 1
+    timeout: 180
+    buildpack: https://github.com/cloudfoundry/go-buildpack.git
+    env:
+     BROKER_SERVICE_NAME: <my-blobstore-instance>
+    services:
+     - <my-blobstore-instance>

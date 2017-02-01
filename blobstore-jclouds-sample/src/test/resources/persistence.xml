@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             version="1.0">
+    <persistence-unit name="default">
+        <description>default persistence unit</description>
+        <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+        <class>com.ge.predix.sample.blobstore.entity.BlobFile</class>
+    </persistence-unit>
+</persistence>

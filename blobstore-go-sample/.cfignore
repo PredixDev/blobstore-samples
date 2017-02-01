@@ -1,0 +1,10 @@
+deploy
+acceptance
+fakes
+*.iml
+.idea
+*.coverprofile
+*_test.go
+coverage.xml
+coverage.out
+*.sh

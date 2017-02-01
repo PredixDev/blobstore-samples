@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d [%thread] %-5level %logger{36} - %msg %n</Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+    </appender>
+
+    <!-- <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/LakeMetadata.log</File> <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <FileNamePattern>LakeMetadata.%d{yyyy-MM-dd}.log</FileNamePattern> <maxHistory>30</maxHistory>
+        </rollingPolicy> <encoder> <Pattern>%d [%thread] %-5level %logger{35} - %msg
+        %n</Pattern> </encoder> </appender> -->
+
+    <!-- Application Loggers -->
+    <logger name="org.cloudfoundry">
+        <level value="debug"/>
+    </logger>
+
+    <!-- 3rdparty Loggers -->
+    <logger name="org.springframework.core">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="org.springframework.beans">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="org.springframework.context">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="org.springframework.jndi">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="org.springframework.ui">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="org.springframework.web">
+        <level value="warn"/>
+    </logger>
+    <logger name="org.springframework.orm">
+        <level value="trace"/>
+    </logger>
+    <logger name="org.springframework.jpa">
+        <level value="trace"/>
+    </logger>
+    <logger name="org.springframework.data">
+        <level value="trace"/>
+    </logger>
+    <root>
+        <level value="info"/>
+        <appender-ref ref="consoleAppender"/>
+    </root>
+</configuration>
