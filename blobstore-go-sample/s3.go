@@ -57,7 +57,7 @@ func (s *S3Handler) BucketHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		contentType := r.Header.Get("Content-Type")
-		if strings.ToUpper(contentType) == "MULTIPART/FORM-DATA" {
+		if strings.Contains(strings.ToUpper(contentType), "MULTIPART/FORM-DATA") {
 			fmt.Println("start multipart")
 			r.ParseMultipartForm(32 << 20)
 			file, handler, err := r.FormFile("file")
@@ -76,9 +76,9 @@ func (s *S3Handler) BucketHandler(w http.ResponseWriter, r *http.Request) {
 			svc.Handlers.Sign.PushBack(SignV2)
 
 			result, err := uploader.Upload(&s3manager.UploadInput{
-				Body:   file,
-				Bucket: &s.bucketName,
-				Key:    &fileName,
+				Body:        file,
+				Bucket:      &s.bucketName,
+				Key:         &fileName,
 				ContentType: &contentType,
 			})
 
@@ -105,9 +105,9 @@ func (s *S3Handler) BucketHandler(w http.ResponseWriter, r *http.Request) {
 
 		contentType = handler.Header.Get("Content-Type")
 		_, err = s.svc.PutObject(&s3.PutObjectInput{
-			Body:   file,
-			Bucket: &s.bucketName,
-			Key:    &fileName,
+			Body:        file,
+			Bucket:      &s.bucketName,
+			Key:         &fileName,
 			ContentType: &contentType,
 		})
 
