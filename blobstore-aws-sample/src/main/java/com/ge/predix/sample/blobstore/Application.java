@@ -45,5 +45,4 @@ public class Application {
     MultipartConfigElement multipartConfigElement() {
         return new MultipartConfigElement("");
     }
-
 }

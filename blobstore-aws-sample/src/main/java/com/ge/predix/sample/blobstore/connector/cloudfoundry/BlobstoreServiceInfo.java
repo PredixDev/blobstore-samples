@@ -44,6 +44,12 @@ public class BlobstoreServiceInfo extends BaseServiceInfo {
      */
     private String url;
 
+    /**
+     * Serverside Encryption
+     */
+    private boolean enableSSE;
+
+
     public BlobstoreServiceInfo(String id, String objectStoreAccessKey, String objectStoreSecretKey, String bucket) {
         super(id);
         this.objectStoreAccessKey = objectStoreAccessKey;
@@ -58,6 +64,16 @@ public class BlobstoreServiceInfo extends BaseServiceInfo {
         this.objectStoreSecretKey = objectStoreSecretKey;
         this.bucket = bucket;
         this.url = url;
+    }
+
+    public BlobstoreServiceInfo(String id, String objectStoreAccessKey, String objectStoreSecretKey,
+                                String bucket, String url, boolean enableSSE) {
+        super(id);
+        this.objectStoreAccessKey = objectStoreAccessKey;
+        this.objectStoreSecretKey = objectStoreSecretKey;
+        this.bucket = bucket;
+        this.url = url;
+        this.enableSSE = enableSSE;
     }
 
     @ServiceProperty
@@ -80,10 +96,15 @@ public class BlobstoreServiceInfo extends BaseServiceInfo {
         return url;
     }
 
+    @ServiceProperty
+    public boolean getEnableSSE() {
+        return enableSSE;
+    }
+
     @Override
     public String toString() {
         return "BlobstoreServiceInfo [objectStoreAccessKey="
-                + objectStoreAccessKey + ", bucket=" + bucket + ", url=" + url
+                + objectStoreAccessKey + ", bucket=" + bucket + ", url=" + url + " enableSSE=" + enableSSE
                 + "]";
     }
 }

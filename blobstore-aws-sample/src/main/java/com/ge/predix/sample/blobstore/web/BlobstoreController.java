@@ -84,6 +84,7 @@ public class BlobstoreController {
             }
         }
 
+
         // Default to 200, when input is missing
         return new ResponseEntity<InputStreamResource>(HttpStatus.OK);
     }
@@ -97,10 +98,9 @@ public class BlobstoreController {
      */
     @RequestMapping(value = "/blob", method = RequestMethod.POST)
     public ResponseEntity<InputStreamResource> handleFileUpload(@RequestParam("file") MultipartFile file) throws Exception {
-
         if (file != null) {
+            S3Object obj = new S3Object();
             try {
-                S3Object obj = new S3Object();
                 obj.setKey(file.getOriginalFilename());
                 obj.setObjectContent(file.getInputStream());
 
@@ -109,10 +109,11 @@ public class BlobstoreController {
             } catch (Exception e) {
                 log.error("handleFileUpload();: Exception occurred : " + e.getMessage());
                 throw e;
+            } finally {
+                obj.close();
             }
             log.info("handleFileUpload(): Successfully uploaded");
         }
-
         return new ResponseEntity<InputStreamResource>(HttpStatus.OK);
 
     }

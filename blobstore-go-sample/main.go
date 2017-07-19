@@ -22,6 +22,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/cloudfoundry-community/go-cfenv"
 	"github.com/gorilla/mux"
+	"strconv"
 )
 
 const (
@@ -37,6 +38,8 @@ var (
 	blobstoreSecretAccessKey     string
 	blobstoreBucketName          string
 	blobstoreHost                string
+	enableSSE		     = os.Getenv("ENABLE_SERVER_SIDE_ENCRYPTION")
+	sse 			     = "AES256"
 )
 
 func main() {
@@ -64,7 +67,13 @@ func main() {
 		}
 	}
 
-	s3Handler := NewS3Handler(blobstoreAccessKeyID, blobstoreSecretAccessKey, blobstoreBucketName, blobstoreHost)
+	boolEnableSSE, err := strconv.ParseBool(enableSSE)
+	if err != nil {
+		log.Println("Error parsing enableSSE")
+		boolEnableSSE = false
+	}
+
+	s3Handler := NewS3Handler(blobstoreAccessKeyID, blobstoreSecretAccessKey, blobstoreBucketName, blobstoreHost, boolEnableSSE)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", s3Handler.serveTemplate)

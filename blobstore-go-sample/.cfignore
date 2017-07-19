@@ -8,3 +8,4 @@ fakes
 coverage.xml
 coverage.out
 *.sh
+manifest.yml

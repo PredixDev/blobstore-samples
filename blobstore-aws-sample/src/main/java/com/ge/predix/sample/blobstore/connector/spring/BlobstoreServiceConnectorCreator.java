@@ -67,13 +67,9 @@ public class BlobstoreServiceConnectorCreator extends AbstractServiceConnectorCr
      ClientConfiguration config = new ClientConfiguration();
         config.setProtocol(Protocol.HTTPS);
 
-        S3ClientOptions options = new S3ClientOptions();
-        config.setSignerOverride("S3SignerType");
-
         BasicAWSCredentials creds = new BasicAWSCredentials(serviceInfo.getObjectStoreAccessKey(), serviceInfo.getObjectStoreSecretKey());
         AmazonS3Client s3Client = new AmazonS3Client(creds, config);
         s3Client.setEndpoint(serviceInfo.getUrl());
-        s3Client.setS3ClientOptions(options);
 
         try {
             // Remove the Credentials from the Object Store URL
@@ -81,7 +77,7 @@ public class BlobstoreServiceConnectorCreator extends AbstractServiceConnectorCr
             String urlWithoutCredentials = url.getProtocol() + "://" + url.getHost();
 
             // Return BlobstoreService
-            return new BlobstoreService(s3Client, serviceInfo.getBucket(), urlWithoutCredentials);
+            return new BlobstoreService(s3Client, serviceInfo.getBucket(), urlWithoutCredentials, serviceInfo.getEnableSSE());
         } catch (MalformedURLException e) {
             log.error("create(): Couldnt parse the URL provided by VCAP_SERVICES. Exception = " + e.getMessage());
             throw new RuntimeException("Blobstore URL is Invalid", e);

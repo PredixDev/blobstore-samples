@@ -9,6 +9,8 @@ This is a sample application for integrating with Predix Blobstore. This is buil
 
 The sample app uses Predix Blobstore to store objects and their metadata.
 
+**Note**: We recommend ```jclouds-blobstore version 2.0.0```. Other versions are not necessarily supported. 
+
 ### Steps
 
 1. Login to Predix.

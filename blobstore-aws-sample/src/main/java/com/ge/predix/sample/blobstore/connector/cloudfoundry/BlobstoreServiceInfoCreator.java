@@ -34,6 +34,7 @@ public class BlobstoreServiceInfoCreator extends CloudFoundryServiceInfoCreator<
      * Name of the service instance to bind
      */
     private static String OBJECT_STORE_SERVICE_NAME = System.getenv("BROKER_SERVICE_NAME");
+    private static String enableSSE = System.getenv("ENABLE_SERVER_SIDE_ENCRYPTION");
     Log log = LogFactory.getLog(BlobstoreServiceInfoCreator.class);
 
     public BlobstoreServiceInfoCreator() {
@@ -68,7 +69,8 @@ public class BlobstoreServiceInfoCreator extends CloudFoundryServiceInfoCreator<
         String url = "";
         url = protocol + "://" + host;
 
-        BlobstoreServiceInfo objectStoreInfo = new BlobstoreServiceInfo(id, objectStoreAccessKey, objectStoreSecretKey, bucket, url);
+        boolean sse = Boolean.parseBoolean(enableSSE);
+        BlobstoreServiceInfo objectStoreInfo = new BlobstoreServiceInfo(id, objectStoreAccessKey, objectStoreSecretKey, bucket, url, sse);
         log.info("createServiceInfo(): " + objectStoreInfo);
 
         return objectStoreInfo;

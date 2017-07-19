@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
+import org.jclouds.s3.reference.S3Headers;
 import org.springframework.cloud.service.AbstractServiceConnectorCreator;
 import org.springframework.cloud.service.ServiceConnectorConfig;
 
@@ -31,6 +32,8 @@ import java.util.Properties;
 
 import static org.jclouds.Constants.PROPERTY_RELAX_HOSTNAME;
 import static org.jclouds.Constants.PROPERTY_TRUST_ALL_CERTS;
+import static org.jclouds.aws.reference.AWSConstants.PROPERTY_AUTH_TAG;
+import static org.jclouds.aws.reference.AWSConstants.PROPERTY_HEADER_TAG;
 import static org.jclouds.s3.reference.S3Constants.PROPERTY_S3_VIRTUAL_HOST_BUCKETS;
 
 /**
@@ -57,6 +60,8 @@ public class BlobstoreServiceConnectorCreator extends AbstractServiceConnectorCr
      */
     public static Properties buildProperties(BlobstoreServiceInfo serviceInfo) {
         Properties props = new Properties();
+        props.setProperty(PROPERTY_AUTH_TAG, "AWS");
+        props.setProperty(PROPERTY_HEADER_TAG, S3Headers.DEFAULT_AMAZON_HEADERTAG);
         props.setProperty(PROPERTY_TRUST_ALL_CERTS, "true");
         props.setProperty(PROPERTY_RELAX_HOSTNAME, "true");
         props.setProperty(PROPERTY_S3_VIRTUAL_HOST_BUCKETS, "true");

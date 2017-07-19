@@ -37,7 +37,7 @@ public class IndexController {
         try {
             // Get the data from database
             log.info("listing buckets");
-            Iterable<S3Object> images = objectStoreService.get();
+            Iterable<String> images = objectStoreService.get();
             model.addAttribute("images", images);
         } catch (Exception e) {
             log.error(e.getMessage());

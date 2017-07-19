@@ -33,12 +33,12 @@
     <div class="table-responsive" id="blob-table">
         <table class="table">
             <tbody class="table tbody">
-            <tr th:each="image : ${images}" th:id="${image.getKey()}">
-                <td class="table td"><a th:href="@{'/v1/blob/'+${image.getKey()}}"><span
-                        th:inline="text">[[${image.getKey()}]]</span></a>
+            <tr th:each="image : ${images}" th:id="${image}">
+                <td class="table td"><a th:href="@{'/v1/blob/'+${image}}"><span
+                        th:inline="text">[[${image}]]</span></a>
                 </td>
                 <td class="table td">
-                    <a href="#" class="delete-blob-link" th:attr="data-blob-id=${image.getKey()}">Delete</a>
+                    <a href="#" class="delete-blob-link" th:attr="data-blob-id=${image}">Delete</a>
                 </td>
             </tr>
             </tbody>

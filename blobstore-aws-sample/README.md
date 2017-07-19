@@ -9,6 +9,8 @@ This is a sample application for integrating with Predix Blobstore. This is buil
 
 The sample app uses Predix Blobstore to store objects and their metadata.
 
+**Note**: We recommend `ws-java-sdk-s3 version 1.11.14`. Other versions are not necessarily supported. 
+
 ### Steps
 
 1. Login to Predix.
@@ -34,6 +36,7 @@ The sample app uses Predix Blobstore to store objects and their metadata.
 8. View the environment variables for your application: `cf env <application_name>`
 9. Copy and paste the URL that is returned in your environment variables for your application into a browser window.
 10. Click Upload to upload your file. You can upload both single object and multipart objects.
-<p> <b>NOTE: If you upload an object with the same file name as an existing object, the existing object is replaced by the new object.</b> 
+
+**Note**: If you upload an object with the same file name as an existing object, the existing object is replaced by the new object. 
 
 

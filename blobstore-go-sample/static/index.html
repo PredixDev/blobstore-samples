@@ -34,14 +34,14 @@
         <table class="table">
 	        <tbody>
 				{{range .}}
-				<tr id={{printf "%s" . }}>
+				<tr id={{printf "%q" . }}>
 					<td>
-						<a href={{printf "%s%s" "/blob/" . }}>
+						<a href={{printf "%s%s" "/blob/" . | printf "%q" }}>
 							<span>{{.}}</span>
 						</a>
 					</td>
 					<td>
-						<a href="#" class="delete-blob-link" {{printf "data-blob-id=%s" . }}>Delete</a>
+						<a href="#" class="delete-blob-link" {{printf "data-blob-id=%q" . }}>Delete</a>
 					</td>
 				</tr>
 				{{end}}

@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -53,6 +54,11 @@ public class BlobstoreService {
      */
     private String url;
 
+    /**
+     * Serverside Encryption
+     */
+    private boolean enableSSE;
+
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
     public BlobstoreService(AmazonS3Client s3Client, String bucket) {
@@ -64,6 +70,14 @@ public class BlobstoreService {
         this.s3Client = s3Client;
         this.bucket = bucket;
         this.url = url;
+    }
+
+
+    public BlobstoreService(AmazonS3Client s3Client, String bucket, String url, boolean enableSSE) {
+        this.s3Client = s3Client;
+        this.bucket = bucket;
+        this.url = url;
+        this.enableSSE = enableSSE;
     }
 
 
@@ -111,6 +125,9 @@ public class BlobstoreService {
             log.info("currentPartSize: " + currentPartSize);
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(currentPartSize);
+            if (enableSSE) {
+                objectMetadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
+            }
             obj.setObjectMetadata(objectMetadata);
 
             if (i == 1 && currentPartSize < (5 * 1024 * 1024)) // make this a const
@@ -122,10 +139,20 @@ public class BlobstoreService {
                 byte[] b = tempBuffer.toByteArray();
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(b);
                 objectMetadata.setContentType(getContentType(b));
+                if (enableSSE) {
+                    objectMetadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
+                }
                 obj.setObjectMetadata(objectMetadata);
 
                 PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, obj.getKey(), byteStream, obj.getObjectMetadata());
                 s3Client.putObject(putObjectRequest);
+
+                ObjectMetadata meta = s3Client.getObjectMetadata(bucket, obj.getKey());
+                Map<String, Object> headers = meta.getRawMetadata();
+                for (Map.Entry<String, Object> entry : headers.entrySet()) {
+                    log.info("Object Metadata -- " + entry.getKey() + ": " + entry.getValue().toString());
+                }
+
                 return;
             }
 
@@ -144,20 +171,25 @@ public class BlobstoreService {
                         .withPartSize(currentPartSize);
                 partETags.add(s3Client.uploadPart(uploadPartRequest).getPartETag());
             }
+
+
+            CompleteMultipartUploadRequest completeMultipartUploadRequest = new CompleteMultipartUploadRequest()
+                    .withBucketName(bucket)
+                    .withPartETags(partETags)
+                    .withUploadId(initResponse.getUploadId())
+                    .withKey(obj.getKey());
+
+            s3Client.completeMultipartUpload(completeMultipartUploadRequest);
         } catch (Exception e) {
             log.error("put(): Exception occurred in put(): " + e.getMessage());
             s3Client.abortMultipartUpload(new AbortMultipartUploadRequest(
                     bucket, obj.getKey(), initResponse.getUploadId()
             ));
             throw e;
+        } finally {
+            is.close();
+            obj.close();
         }
-        CompleteMultipartUploadRequest completeMultipartUploadRequest = new CompleteMultipartUploadRequest()
-                .withBucketName(bucket)
-                .withPartETags(partETags)
-                .withUploadId(initResponse.getUploadId())
-                .withKey(obj.getKey());
-
-        s3Client.completeMultipartUpload(completeMultipartUploadRequest);
     }
 
     private String getContentType(byte[] b) {
@@ -227,15 +259,16 @@ public class BlobstoreService {
      *
      * @return List<BlobFile> List of Blobs
      */
-    public List<S3Object> get() {
-        List<S3Object> objs = new ArrayList<>();
+    public List<String> get() {
+        List<String> objs = new ArrayList<>();
         try {
             // Get the List from BlobStore
             ObjectListing objectList = s3Client.listObjects(bucket);
 
             for (S3ObjectSummary objectSummary :
                     objectList.getObjectSummaries()) {
-                objs.add(s3Client.getObject(new GetObjectRequest(bucket, objectSummary.getKey())));
+
+                objs.add(objectSummary.getKey());
             }
 
         } catch (Exception e) {
